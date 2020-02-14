@@ -1,0 +1,14 @@
+{
+    "service": {
+        "name": "web server",
+        "port": 80,
+        "tags": ["nginx", "server"],
+        "check": {
+            "http": "http://127.0.0.1",
+            "tls_skip_verify": false,
+            "method": "GET",
+            "interval": "10s",
+            "timeout": "2s"
+        }
+    }
+}

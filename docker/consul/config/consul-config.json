@@ -1,0 +1,10 @@
+{
+    "server": true,
+    "ui": true,
+    "datacenter": "dc1-local",
+    "data_dir": "/usr/src/consul/data",
+    "log_level": "DEBUG",
+    "ports": {
+        "dns": 53
+    }
+}

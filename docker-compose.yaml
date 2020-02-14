@@ -1,0 +1,34 @@
+version: "3.6"
+
+services: 
+  consul:
+    build:
+      context: ./docker/consul
+      dockerfile: Dockerfile
+    hostname: consul-server
+    ports: 
+      - 8500:8500
+    command: agent -server -dev -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -enable-local-script-checks -config-file=/usr/src/consul/config/config.json
+    volumes:
+      - ./docker/consul/config/consul-config.json:/usr/src/consul/config/config.json
+      - ./docker/consul/data:/usr/src/consul/data
+
+  consul-worker:
+    build: 
+      context: ./docker/consul
+      dockerfile: Dockerfile
+    hostname: consul-worker
+    command: agent -server -join consul -config-file=/usr/src/consul/config/config.json
+    volumes: 
+      - ./docker/consul/config/consul-config.json:/usr/src/consul/config/config.json
+    depends_on: 
+      - consul
+
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    hostname: "nginx-server"
+    #command: consul agent -data-dir=/usr/src/consul/data -join consul -datacenter="dc1-local" -config-dir=/usr/src/consul/service/nginx.json
+    depends_on: 
+      - consul
